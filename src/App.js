@@ -38,7 +38,7 @@ const App = () => {
           </div>
         </Layout>
       
-      <div className='footer'>
+        <div className='footer'>
       <Typography.Title level={5} style={{color:'white', textAlign: 'center'}}>
         Crypto Owl <br />
         © 2022 Karolis Pigaga
@@ -54,6 +54,7 @@ const App = () => {
       </Space>
       </div>
       </div>
+     
     </div>
   );
 };

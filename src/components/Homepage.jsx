@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 import { useGetCryptosQuery } from '../services/cryptoApi';
 import {News, Cryptocurrencies} from '../components'
+import Loader from './Loader';
 
 const { Title } = Typography;
 
@@ -13,9 +14,20 @@ const Homepage = () => {
   const {data, isFetching} = useGetCryptosQuery(12);
   const globalStats = data?.data?.stats;
 
-  if(isFetching) return 'Loading ....';
+  if (isFetching) return <Loader />;
   return (
     <>
+      
+      <div className='home-heading-container'>
+        <Title level={2} className='home-title'>Latest Crypto News</Title>
+        <Title level={3} className='show-more'><Link to='/news'>Show More</Link></Title>
+      </div>
+      <News simplified />
+      <div className='home-heading-container'>
+        <Title level={2} className='home-title'>Top 12 Crypto Currencies in the World</Title>
+        <Title level={3} className='show-more'><Link to='/cryptocurrencies'>Show More</Link></Title>
+      </div>
+      <Cryptocurrencies simplified/>
       <Title level={2} className='heading'>
         Global Crypto Stats
       </Title>
@@ -36,17 +48,6 @@ const Homepage = () => {
           <Statistic title='Total Market' value={millify(globalStats.totalMarkets)}/>
         </Col>
       </Row>
-      <div className='home-heading-container'>
-        <Title level={2} className='home-title'>Latest Crypto News</Title>
-        <Title level={3} className='show-more'><Link to='/news'>Show More</Link></Title>
-      </div>
-      <News simplified />
-      <div className='home-heading-container'>
-        <Title level={2} className='home-title'>Top 12 Crypto Currencies in the World</Title>
-        <Title level={3} className='show-more'><Link to='/cryptocurrencies'>Show More</Link></Title>
-      </div>
-      <Cryptocurrencies simplified/>
-      
     </>
   );
 };

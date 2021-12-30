@@ -15,26 +15,42 @@ import {
   ThunderboltOutlined,
 } from '@ant-design/icons';
 
-import { useGetCryptoDetailsQuery } from '../services/cryptoApi';
+import {
+  useGetCryptoDetailsQuery,
+  useGetCryptoHistoryQuery,
+} from '../services/cryptoApi';
+
+import Chart from 'chart.js/auto';
+import { CategoryScale } from 'chart.js';
+import LineChart from './LineChart';
+import Loader from './Loader';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
+
+Chart.register(CategoryScale);
 
 const CryptoDetails = () => {
   const { coinId } = useParams();
   const [timePeriod, setTimePeriod] = useState('7d');
   const { data, isFetching } = useGetCryptoDetailsQuery(coinId);
+  const { data: coinHistory } = useGetCryptoHistoryQuery({
+    coinId,
+    timePeriod,
+  });
 
   const cryptoDetails = data?.data?.coin;
 
-  if (isFetching) return 'Loading...';
+  if (isFetching) return <Loader />;
 
   const time = ['3h', '24h', '7d', '30d', '1y', '3m', '3y', '5y'];
 
   const stats = [
     {
       title: 'Price to USD',
-      value: `$ ${cryptoDetails.price && millify(cryptoDetails.price)}`,
+      value: `$ ${
+        cryptoDetails.price && millify(cryptoDetails.price, { precision: 3 })
+      }`,
       icon: <DollarCircleOutlined />,
     },
     { title: 'Rank', value: cryptoDetails.rank, icon: <NumberOutlined /> },
@@ -109,14 +125,21 @@ const CryptoDetails = () => {
           <Option key={date}>{date}</Option>
         ))}
       </Select>
+      <LineChart
+        coinHistory={coinHistory}
+        currentPrice={millify(cryptoDetails.price, { precision: 3 })}
+        coinName={cryptoDetails.name}
+      />
       <Col className='stats-container'>
         <Col className='coin-value-statistics'>
           <Col className='coin-value-statistics-heading'>
             <Title level={3} className='coin-details-heading'>
               {cryptoDetails.name} Value Statistics
             </Title>
-            <p>An overview showing the statistics of {cryptoDetails.name}, such
-              as the base and quote currency, the rank, and trading volume.</p>
+            <p>
+              An overview showing the statistics of {cryptoDetails.name}, such
+              as the base and quote currency, the rank, and trading volume.
+            </p>
           </Col>
           {stats.map(({ icon, title, value }) => (
             <Col className='coin-stats'>

@@ -52,12 +52,11 @@ a:hover{
   width: 100%;
 }
 .logo{
-  margin:0 0 0 15px !important;
+  margin:0 0 0 15px;
 }
 .logo a{
  color: white;
 }
-
 .menu-control-container{
   display: none !important;
   position: absolute !important;
@@ -223,7 +222,7 @@ a:hover{
 }
 
 .coin-desc-link a{
-  color: #9B0000 !important;
+  color: var(--pink);
 }
 
 .coin-desc-link h3{
@@ -233,6 +232,7 @@ a:hover{
 .coin-desc{
   flex: 0.5;
 }
+
 .coin-links{
 padding: 0px 20px;
   flex: 0.5;

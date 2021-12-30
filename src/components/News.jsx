@@ -6,6 +6,7 @@ import { useGetCryptoNewsQuery } from '../services/cryptoNewsApi';
 import { useGetCryptosQuery } from '../services/cryptoApi';
 
 import placeholderImg from '../images/news-placeholder.png';
+import Loader from './Loader';
 
 const { Text, Title } = Typography;
 const { Option } = Select;
@@ -18,7 +19,7 @@ const News = ({ simplified }) => {
   });
   const { data } = useGetCryptosQuery(100);
 
-  if (!cryptoNews) return 'Loading ...';
+  if (!cryptoNews) return  <Loader />;
 
   return (
     <Row gutter={[24, 24]}>
@@ -50,7 +51,7 @@ const News = ({ simplified }) => {
                   {article.name}
                 </Title>
                 <img
-                  style={{ width: '100px', height: '100px' }}
+                  style={{ width: '4.8rem', height: '4.8rem' }}
                   src={article?.image?.thumbnail?.contentUrl || placeholderImg}
                   alt={article.name}
                 />
